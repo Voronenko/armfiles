@@ -1,0 +1,32 @@
+---
+  - git: git@github.com:voronenko/dotfiles.git
+    version: master
+    files:
+      - src: aws/
+        dst: aws/
+      - src: completions/
+        dst: completions/
+      - src: helpers/
+        dst: helpers/
+      - src: bashrc
+        dst: ./bashrc
+      - src: zshrc
+        dst: ./zshrc
+      - src: vimrc
+        dst: ./vimrc
+      - src: selected_editor
+        dst: ./selected_editor
+      - src: init.sh
+        dst: ./init.sh
+      - src: init_simple.sh 
+        dst: ./init_simple.sh 
+      - src: grcat.pgsql
+        dst: ./grcat.pgsql
+      - src: grcat.mysql
+        dst: ./grcat.mysql
+      - src: gemrc
+        dst: ./gemrc
+      - src: editorconfig
+        dst: ./editorconfig
+      - src: direnvrc
+        dst: ./direnvrc

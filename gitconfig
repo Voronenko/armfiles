@@ -1,0 +1,56 @@
+[core]
+	autocrlf = input
+	pager = diff-so-fancy | less --tabs=4 -RFX
+[alias]
+	ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
+	ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
+	lnc = log --pretty=format:"%h\\ %s\\ [%cn]"
+	lds = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short
+	ld = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=relative
+	filelog = log -u
+	dl = !git ll -1
+	dlc = diff --cached HEAD^
+	f = !git ls-files | grep -i
+	la = !git config -l | grep alias | cut -c 7-
+	latest = pull --recurse-submodules
+        clean-on-master = "!git checkout master && git branch --merged | grep -v 'develop' | grep -v '\\*' | xargs -n 1 git branch -d"
+        clean-on-develop = "!git checkout develop && git branch --merged | grep -v 'master' | grep -v '\\*' | xargs -n 1 git branch -d"
+        clean-hard-dfx = "clean -dfx"
+        fixupstream = !git branch --set-upstream-to=origin/`git symbolic-ref --short HEAD`
+[push]
+	default = current
+[commit]
+	gpgsign = false
+[pager]
+       diff = diff-so-fancy | less --tabs=1,5 -RFX
+       show = diff-so-fancy | less --tabs=1,5 -RFX
+[gpg]
+	program = gpg2
+[color]
+	ui = true
+[color "diff-highlight"]
+	oldNormal = red bold
+	oldHighlight = red bold 52
+	newNormal = green bold
+	newHighlight = green bold 22
+[color "diff"]
+	meta = yellow
+	frag = magenta bold
+	commit = yellow bold
+	old = red bold
+	new = green bold
+	whitespace = red reverse
+[merge]
+    tool = intellij
+[mergetool "intellij"]
+    cmd = /usr/local/bin/idea merge $(cd $(dirname "$LOCAL") && pwd)/$(basename "$LOCAL") $(cd $(dirname "$REMOTE") && pwd)/$(basename "$REMOTE") $(cd $(dirname "$BASE") && pwd)/$(basename "$BASE") $(cd $(dirname "$MERGED") && pwd)/$(basename "$MERGED")
+    trustExitCode = true
+[mergetool "meld"]
+    cmd = meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED"
+#    cmd = meld "$LOCAL" "$BASE" "$REMOTE" --output "$MERGED"
+[diff]
+    tool = intellij
+[difftool "intellij"]
+    cmd = /usr/local/bin/idea diff $(cd $(dirname "$LOCAL") && pwd)/$(basename "$LOCAL") $(cd $(dirname "$REMOTE") && pwd)/$(basename "$REMOTE")
+[difftool "meld"]
+    cmd = meld "$LOCAL" "$REMOTE"

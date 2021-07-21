@@ -706,6 +706,10 @@ install-misc-cadvisor:
 	curl -sLo ~/dotfiles/bin/cadvisor https://github.com/google/cadvisor/releases/download/v0.38.7/cadvisor
 	chmod +x ~/dotfiles/bin/cadvisor
 
+fix-locale:
+	sudo apt-get install -y locales
+	locale-gen en_US.UTF-8
+	localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
 
 # replace system python with custom
 #add-apt-repository ppa:deadsnakes/ppa

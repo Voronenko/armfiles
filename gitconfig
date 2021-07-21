@@ -1,3 +1,6 @@
+[user]
+	name = Vyacheslav Voronenko
+	email = git@voronenko.info
 [core]
 	autocrlf = input
 	pager = diff-so-fancy | less --tabs=4 -RFX

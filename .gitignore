@@ -1,3 +1,6 @@
+.vscode
+*.swp
+
 bin/dry
 bin/eksctl
 bin/github-release

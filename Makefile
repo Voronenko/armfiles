@@ -717,3 +717,5 @@ fix-locale:
 # update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.8 1
 
 
+# sftp go standalone
+#https://github.com/drakkan/sftpgo

@@ -26,7 +26,8 @@ swiss-zsh: zsh-alias-tips fonts-awesome-terminal-fonts fonts-source-code-pro fon
 swiss-aws:  install-aws-key-importer install-aws-myaws
 	@echo aws tools added
 
-
+fix:    install-aws-myaws fix-locale swiss-fzf
+	@echo install complete
 
 # ZSH
 zsh-fzf-repo:
@@ -716,4 +717,7 @@ fix-locale:
 #apt install python3.8
 # update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.8 1
 
-
+install-aws-myaws:
+	curl -sLo /tmp/myaws.tar.gz https://github.com/minamijoyo/myaws/releases/download/v0.4.8/myaws_v0.4.8_linux_arm64.tar.gz
+	tar -xvzf /tmp/myaws.tar.gz -C ~/dotfiles/bin
+	rm /tmp/myaws.tar.gz

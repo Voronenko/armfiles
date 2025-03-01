@@ -92,7 +92,7 @@ install-console-diffsofancy:
 # fd is a simple, fast and user-friendly alternative to find. https://github.com/sharkdp/fd
 # fd service
 install-console-fd:
-	curl -sLo /tmp/fd.deb https://github.com/sharkdp/fd/releases/download/v8.2.1/fd_8.2.1_armhf.deb
+	curl -sLo /tmp/fd.deb https://github.com/sharkdp/fd/releases/download/v10.2.0/fd-musl_10.2.0_arm64.deb
 	sudo dpkg -i /tmp/fd.deb
 
 # ripgrep recursively searches directories for a regex pattern https://github.com/BurntSushi/ripgrep

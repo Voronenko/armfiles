@@ -724,3 +724,6 @@ install-aws-myaws:
 	curl -sLo /tmp/myaws.tar.gz https://github.com/minamijoyo/myaws/releases/download/v0.4.8/myaws_v0.4.8_linux_arm64.tar.gz
 	tar -xvzf /tmp/myaws.tar.gz -C ~/dotfiles/bin
 	rm /tmp/myaws.tar.gz
+
+dotfiles-set-git-remote:
+	git remote set-url origin git@github.com:Voronenko/armfiles.git

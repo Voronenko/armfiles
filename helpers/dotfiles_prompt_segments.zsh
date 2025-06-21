@@ -9,6 +9,28 @@
 
 ######################## DOTFILES SIMPLE PROMPTS
 
+prompt_anaconda() {
+  # Depending on the conda version, either might be set. This
+  # variant works even if both are set.
+  local _path=$CONDA_ENV_PATH$CONDA_PREFIX
+  if ! [ -z "$_path" ]; then
+    # config - can be overwritten in users' zshrc file.
+    set_default POWERLEVEL9K_ANACONDA_LEFT_DELIMITER ""
+    set_default POWERLEVEL9K_ANACONDA_RIGHT_DELIMITER ""
+    "$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "$POWERLEVEL9K_ANACONDA_LEFT_DELIMITER$(basename $_path)$POWERLEVEL9K_ANACONDA_RIGHT_DELIMITER" 'PYTHON_ICON'
+  fi
+}
+
+prompt_pyenv() {
+  # If VIRTUAL_ENV is set, it will be shown by virtualenv prompt
+  if ! [[ -z "$PYENV_ROOT" ]] && [[ -z $VIRTUAL_ENV ]]; then
+    # config - can be overwritten in users' zshrc file.
+    set_default POWERLEVEL9K_PYENV_LEFT_DELIMITER ""
+    set_default POWERLEVEL9K_PYENV_RIGHT_DELIMITER ""
+    "$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "$POWERLEVEL9K_PYENV_LEFT_DELIMITER$(pyenv version-name)$POWERLEVEL9K_PYENV_RIGHT_DELIMITER" 'PYTHON_ICON'
+  fi
+}
+
 prompt_dot_status() {
   "$1_prompt_segment" "$0" "$2" none none "%(?,,%{$fg[yellow]%}[%{$fg_bold[white]%}%?%{$reset_color%}%{$fg[yellow]%}])" ''
 }
@@ -21,11 +43,26 @@ prompt_dot_dir() {
   "$1_prompt_segment" "$0" "$2" none none "%{$fg[cyan]%}%c%{$reset_color%}$(snpt "DOTFILES_UL_FINISH" "yellow")" ''
 }
 
+
 prompt_dot_ssh() {
    if [[ -n "${SSH_CONNECTION-}${SSH_CLIENT-}${SSH_TTY-}" ]]; then
-  "$1_prompt_segment" "$0" "$2" none none "%{$fg_bold[yellow]%}⇕ ${USER}%{$reset_color%}" ''
+     if [[ $(cat /etc/hostname) =~ ^ip- ]]; then
+       # Step 1: Get the session token
+       TOKEN=$(curl -m 0.003 -s -X PUT -H "X-aws-ec2-metadata-token-ttl-seconds: 21600" http://169.254.169.254/latest/api/token)
+       # Step 2: Use the token to get the instance ID
+       USER_INSTANCE=$(curl -m 0.003 -s -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/instance-id)
+       # Check for additional aliases in /etc/hosts
+       ALIASES=$(grep -E "^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+" /etc/hosts | awk '{for(i=2;i<=NF;i++) if ($i != "localhost") print $i}' | tr '\n' ' ')
+       if [[ -n "$ALIASES" ]]; then
+         USER_INSTANCE+="/$ALIASES"
+       fi
+     else
+       USER_INSTANCE=$(hostname)
+     fi
+     "$1_prompt_segment" "$0" "$2" none none "%{$fg_bold[yellow]%} ${USER} 🖥 ${USER_INSTANCE}%{$reset_color%}" ''
    fi
 }
+
 
 prompt_dot_dck() {
    if [[ -f /.dockerenv ]]; then
@@ -39,8 +76,16 @@ prompt_dot_terraform() {
     # check if in terraform dir
     if [ -d .terraform ]; then
       local workspace=$(terraform workspace show 2> /dev/null) || return
-      "$1_prompt_segment" "$0" "$2" gray yellow "$(print_icon 'SERVER_ICON') ${workspace}" ''
+      "$1_prompt_segment" "$0" "$2" gray cyan "$(print_icon 'SERVER_ICON') ${workspace}" ''
     fi
+}
+
+prompt_dot_node() {
+if [[ -n "$NVM_BIN" ]]; then
+    # Extract the Node.js version from the NVM_BIN path
+    local node_version=$(echo "$NVM_BIN" | grep -oP 'v\d+\.\d+\.\d+')
+    "$1_prompt_segment" "$0" "$2" "gray" "yellow" "${node_version}" 'NODE_ICON'
+fi
 }
 
 prompt_dot_jenv() {
@@ -690,4 +735,9 @@ prompt_java_version() {
   if [[ -n "$java_version" ]]; then
     "$1_prompt_segment" "$0" "$2" "red" "white" "$java_version" "JAVA_ICON"
   fi
+}
+
+prompt_kubie() {
+  [[ -n ${KUBIE_ACTIVE} ]] || return
+  echo "${ZSH_THEME_KUBIE_PREFIX:=[}%{$fg[red]%}$(kubie info ctx)%{$reset_color%}|%{$fg[green]%}$(kubie info ns)%{$reset_color%}${ZSH_THEME_KUBIE_SUFFIX:=]}"
 }

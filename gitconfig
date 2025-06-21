@@ -3,7 +3,7 @@
 	email = git@voronenko.info
 [core]
 	autocrlf = input
-	pager = diff-so-fancy | less --tabs=4 -RFX
+#	pager = diff-so-fancy | less --tabs=4 -RFX
 [alias]
 	ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
 	ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
@@ -24,9 +24,9 @@
 	default = current
 [commit]
 	gpgsign = false
-[pager]
-       diff = diff-so-fancy | less --tabs=1,5 -RFX
-       show = diff-so-fancy | less --tabs=1,5 -RFX
+#[pager]
+#       diff = diff-so-fancy | less --tabs=1,5 -RFX
+#       show = diff-so-fancy | less --tabs=1,5 -RFX
 [gpg]
 	program = gpg2
 [color]

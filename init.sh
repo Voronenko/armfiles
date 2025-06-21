@@ -64,7 +64,7 @@ else
           exit 1
       fi
 
-      sudo $pkgmanager install zsh -y
+      sudo $pkgmanager install make zsh -y
       install_zsh
 
     # If the platform is OS X, tell the user to install zsh :)

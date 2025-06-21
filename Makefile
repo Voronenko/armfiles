@@ -26,7 +26,8 @@ swiss-zsh: zsh-alias-tips fonts-awesome-terminal-fonts fonts-source-code-pro fon
 swiss-aws:  install-aws-key-importer install-aws-myaws
 	@echo aws tools added
 
-
+fix:    install-aws-myaws fix-locale swiss-fzf
+	@echo install complete
 
 # ZSH
 zsh-fzf-repo:
@@ -581,8 +582,9 @@ install-aws-sam-cli:
 
 #https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html#install-plugin-linux
 install-aws-session-manager-plugin:
-	curl "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_64bit/session-manager-plugin.deb" -o "/tmp/session-manager-plugin.deb"
-	sudo dpkg -i session-manager-plugin.deb
+	curl "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_arm64/session-manager-plugin.deb" -o "/tmp/session-manager-plugin.deb"
+	sudo cd /tmp && dpkg -i session-manager-plugin.deb
+	rm /tmp/session-manager-plugin.deb
 
 # /AWS
 
@@ -716,6 +718,9 @@ fix-locale:
 #apt install python3.8
 # update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.8 1
 
-
 # sftp go standalone
 #https://github.com/drakkan/sftpgo
+install-aws-myaws:
+	curl -sLo /tmp/myaws.tar.gz https://github.com/minamijoyo/myaws/releases/download/v0.4.8/myaws_v0.4.8_linux_arm64.tar.gz
+	tar -xvzf /tmp/myaws.tar.gz -C ~/dotfiles/bin
+	rm /tmp/myaws.tar.gz
